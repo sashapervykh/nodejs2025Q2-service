@@ -1,5 +1,5 @@
 import { HttpException, HttpStatus } from '@nestjs/common';
-import { CustomNotFoundError } from './customErrors';
+import { CustomNotAuthorizedError, CustomNotFoundError } from './customErrors';
 
 export function handleError(err) {
   if (err instanceof CustomNotFoundError) {
@@ -10,6 +10,18 @@ export function handleError(err) {
         error: 'NOT FOUND',
       },
       HttpStatus.NOT_FOUND,
+      { cause: err },
+    );
+  }
+
+  if (err instanceof CustomNotAuthorizedError) {
+    throw new HttpException(
+      {
+        message: err.message,
+        statusCode: HttpStatus.FORBIDDEN,
+        error: 'FORBIDDEN',
+      },
+      HttpStatus.FORBIDDEN,
       { cause: err },
     );
   }

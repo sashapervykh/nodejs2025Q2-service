@@ -1,9 +1,12 @@
 import { Injectable } from '@nestjs/common';
 import { UserRepository } from './user.repository';
-import { CreateUserDto } from './user.dto';
+import { CreateUserDto, UpdatePasswordDto } from './user.dto';
 import { randomUUID } from 'node:crypto';
 import { User } from './user.interface';
-import { CustomNotFoundError } from 'src/common/utils/customErrors';
+import {
+  CustomNotAuthorizedError,
+  CustomNotFoundError,
+} from 'src/common/utils/customErrors';
 
 @Injectable()
 export class UserService {
@@ -34,6 +37,20 @@ export class UserService {
       version: 1,
     };
     this.repository.createUser(user);
+    return this.getUserWithoutPassword(user);
+  }
+
+  updatePassword(id: string, updatePasswordDto: UpdatePasswordDto) {
+    const user = this.repository.getUserById(id);
+    if (!user) throw new CustomNotFoundError('user');
+    if (user.password !== updatePasswordDto.oldPassword) {
+      throw new CustomNotAuthorizedError();
+    }
+    user.password = updatePasswordDto.newPassword;
+    user.version++;
+    user.updatedAt = Date.now();
+
+    this.repository.updatePassword(user);
     return this.getUserWithoutPassword(user);
   }
 

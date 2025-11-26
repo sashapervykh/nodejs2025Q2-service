@@ -15,4 +15,11 @@ export class UserRepository {
   createUser(user: User) {
     database.users.push(user);
   }
+
+  updatePassword(user: User) {
+    const oldUser = this.getUserById(user.id);
+    oldUser.password = user.id;
+    oldUser.version = user.version;
+    oldUser.updatedAt = user.updatedAt;
+  }
 }

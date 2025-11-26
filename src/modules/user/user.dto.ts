@@ -8,7 +8,10 @@ export class CreateUserDto {
   password: string;
 }
 
-export interface UpdatePasswordDto {
-  oldPassword: string; // previous password
-  newPassword: string; // new password
+export class UpdatePasswordDto {
+  @IsString()
+  oldPassword: string; 
+
+  @IsString()
+  newPassword: string; 
 }

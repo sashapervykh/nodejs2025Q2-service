@@ -4,3 +4,10 @@ export class CustomNotFoundError extends Error {
     this.name = 'NotFoundError';
   }
 }
+
+export class CustomNotAuthorizedError extends Error {
+  constructor() {
+    super(`Wrong password was provided!`);
+    this.name = 'NotAuthorizedError';
+  }
+}
