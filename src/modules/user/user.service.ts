@@ -40,6 +40,12 @@ export class UserService {
     return this.getUserWithoutPassword(user);
   }
 
+  deleteUser(id: string) {
+    const user = this.repository.getUserById(id);
+    if (!user) throw new CustomNotFoundError('user');
+    this.repository.deleteUser(id);
+  }
+
   updatePassword(id: string, updatePasswordDto: UpdatePasswordDto) {
     const user = this.repository.getUserById(id);
     if (!user) throw new CustomNotFoundError('user');

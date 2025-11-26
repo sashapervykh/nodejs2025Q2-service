@@ -1,17 +1,19 @@
 import {
   Body,
   Controller,
+  Delete,
   Get,
-  HttpException,
   HttpStatus,
   Param,
   ParseUUIDPipe,
   Post,
   Put,
+  Res,
 } from '@nestjs/common';
 import { UserService } from './user.service';
 import { CreateUserDto, UpdatePasswordDto } from './user.dto';
 import { handleError } from 'src/common/utils/handleErrors';
+import { Response } from 'express';
 
 @Controller('user')
 export class UserController {
@@ -42,6 +44,16 @@ export class UserController {
   ) {
     try {
       return this.userService.updatePassword(id, updatePasswordDto);
+    } catch (err) {
+      handleError(err);
+    }
+  }
+
+  @Delete(':id')
+  delete(@Param('id', ParseUUIDPipe) id: string, @Res() response: Response) {
+    try {
+      this.userService.deleteUser(id);
+      response.status(HttpStatus.NO_CONTENT).send();
     } catch (err) {
       handleError(err);
     }

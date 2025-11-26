@@ -16,6 +16,10 @@ export class UserRepository {
     database.users.push(user);
   }
 
+  deleteUser(id: string) {
+    database.users = database.users.filter((elem) => elem.id !== id);
+  }
+
   updatePassword(user: User) {
     const oldUser = this.getUserById(user.id);
     oldUser.password = user.id;
