@@ -3,6 +3,7 @@ import { UserRepository } from './user.repository';
 import { CreateUserDto } from './user.dto';
 import { randomUUID } from 'node:crypto';
 import { User } from './user.interface';
+import { CustomNotFoundError } from 'src/common/utils/customErrors';
 
 @Injectable()
 export class UserService {
@@ -12,6 +13,14 @@ export class UserService {
     return this.repository
       .findAllUsers()
       .map((user) => this.getUserWithoutPassword(user));
+  }
+
+  getUserById(id: string) {
+    const user = this.repository.getUserById(id);
+    console.log(user);
+    if (!user) throw new CustomNotFoundError('user');
+    console.log(user);
+    return this.getUserWithoutPassword(user);
   }
 
   createUser(createUserDto: CreateUserDto) {

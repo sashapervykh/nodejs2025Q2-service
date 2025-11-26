@@ -8,6 +8,10 @@ export class UserRepository {
     return database.users;
   }
 
+  getUserById(id: string) {
+    return database.users.find((elem) => elem.id === id);
+  }
+
   createUser(user: User) {
     database.users.push(user);
   }
