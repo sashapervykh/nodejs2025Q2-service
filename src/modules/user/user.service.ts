@@ -33,7 +33,7 @@ export class UserService {
       id: uuid,
       ...createUserDto,
       createdAt,
-      updatedAt: 0,
+      updatedAt: createdAt,
       version: 1,
     };
     this.repository.createUser(user);

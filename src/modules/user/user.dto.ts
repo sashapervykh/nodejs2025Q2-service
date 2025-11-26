@@ -10,8 +10,8 @@ export class CreateUserDto {
 
 export class UpdatePasswordDto {
   @IsString()
-  oldPassword: string; 
+  oldPassword: string;
 
   @IsString()
-  newPassword: string; 
+  newPassword: string;
 }
