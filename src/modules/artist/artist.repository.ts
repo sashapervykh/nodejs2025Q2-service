@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { database } from 'src/database/database';
+import { Artist } from './artist.interface';
 
 @Injectable()
 export class ArtistRepository {
@@ -11,9 +12,9 @@ export class ArtistRepository {
   //   return database.users.find((elem) => elem.id === id);
   // }
 
-  // createUser(user: User) {
-  //   database.users.push(user);
-  // }
+  createArtist(artist: Artist) {
+    database.artists.push(artist);
+  }
 
   // deleteUser(id: string) {
   //   database.users = database.users.filter((elem) => elem.id !== id);

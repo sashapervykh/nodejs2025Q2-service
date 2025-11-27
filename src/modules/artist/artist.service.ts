@@ -1,7 +1,7 @@
+import { randomUUID } from 'node:crypto';
 import { Injectable } from '@nestjs/common';
 import { ArtistRepository } from './artist.repository';
-// import { CreateUserDto, UpdatePasswordDto } from './user.dto';
-// import { randomUUID } from 'node:crypto';
+import { CreateArtistDto } from './artist.dto';
 // import { User } from './user.interface';
 // import {
 //   CustomNotAuthorizedError,
@@ -24,19 +24,15 @@ export class ArtistService {
   //   return this.getUserWithoutPassword(user);
   // }
 
-  // createUser(createUserDto: CreateUserDto) {
-  //   const createdAt = Date.now();
-  //   const uuid = randomUUID();
-  //   const user = {
-  //     id: uuid,
-  //     ...createUserDto,
-  //     createdAt,
-  //     updatedAt: createdAt,
-  //     version: 1,
-  //   };
-  //   this.repository.createUser(user);
-  //   return this.getUserWithoutPassword(user);
-  // }
+  createArtist(createArtistDto: CreateArtistDto) {
+    const uuid = randomUUID();
+    const artist = {
+      id: uuid,
+      ...createArtistDto,
+    };
+    this.repository.createArtist(artist);
+    return artist;
+  }
 
   // deleteUser(id: string) {
   //   const user = this.repository.getUserById(id);

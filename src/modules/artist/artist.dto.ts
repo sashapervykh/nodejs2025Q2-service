@@ -1,11 +1,11 @@
-import { IsString } from 'class-validator';
+import { IsBoolean, IsString } from 'class-validator';
 
 export class CreateArtistDto {
   @IsString()
   name: string;
 
-  @IsString()
-  grammy: string;
+  @IsBoolean()
+  grammy: boolean;
 }
 
 // export class UpdateArtistDto {

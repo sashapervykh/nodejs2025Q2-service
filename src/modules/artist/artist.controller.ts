@@ -1,17 +1,17 @@
 import {
-  // Body,
+  Body,
   Controller,
   // Delete,
   Get,
   // HttpStatus,
   // Param,
   // ParseUUIDPipe,
-  // Post,
+  Post,
   // Put,
   // Res,
 } from '@nestjs/common';
 import { ArtistService } from './artist.service';
-// import { CreateUserDto, UpdatePasswordDto } from './artist.dto';
+import { CreateArtistDto } from './artist.dto';
 // import { handleError } from 'src/common/utils/handleErrors';
 // import { Response } from 'express';
 
@@ -32,10 +32,10 @@ export class ArtistController {
   //   }
   // }
 
-  // @Post()
-  // create(@Body() createUserDto: CreateUserDto) {
-  //   return this.userService.createUser(createUserDto);
-  // }
+  @Post()
+  create(@Body() createArtistDto: CreateArtistDto) {
+    return this.artistService.createArtist(createArtistDto);
+  }
 
   // @Put(':id')
   // update(
