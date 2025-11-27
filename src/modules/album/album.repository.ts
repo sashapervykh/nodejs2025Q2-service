@@ -20,9 +20,10 @@ export class AlbumRepository {
     database.albums = database.albums.filter((elem) => elem.id !== id);
   }
 
-  // updateArtist(artist: Artist) {
-  //   const oldArtist = this.getArtistById(artist.id);
-  //   oldArtist.name = artist.name;
-  //   oldArtist.grammy = artist.grammy;
-  // }
+  updateAlbum(album: Album) {
+    const oldAlbum = this.getAlbumById(album.id);
+    oldAlbum.name = album.name;
+    oldAlbum.year = album.year;
+    oldAlbum.artistId = album.artistId;
+  }
 }

@@ -1,7 +1,7 @@
 import { randomUUID } from 'node:crypto';
 import { Injectable } from '@nestjs/common';
 import { AlbumRepository } from './album.repository';
-import { CreateAlbumDto } from './album.dto';
+import { CreateAlbumDto, UpdateAlbumDto } from './album.dto';
 import { CustomNotFoundError } from 'src/common/utils/customErrors';
 
 @Injectable()
@@ -13,9 +13,9 @@ export class AlbumService {
   }
 
   getAlbumById(id: string) {
-    const artist = this.repository.getAlbumById(id);
-    if (!artist) throw new CustomNotFoundError('album');
-    return artist;
+    const album = this.repository.getAlbumById(id);
+    if (!album) throw new CustomNotFoundError('album');
+    return album;
   }
 
   createAlbum(createAlbumDto: CreateAlbumDto) {
@@ -29,19 +29,20 @@ export class AlbumService {
   }
 
   deleteAlbum(id: string) {
-    const artist = this.repository.getAlbumById(id);
-    if (!artist) throw new CustomNotFoundError('album');
+    const album = this.repository.getAlbumById(id);
+    if (!album) throw new CustomNotFoundError('album');
     this.repository.deleteAlbum(id);
   }
 
-  // updateArtist(id: string, updateArtistDto: UpdateArtistDto) {
-  //   const artist = this.repository.getArtistById(id);
-  //   if (!artist) throw new CustomNotFoundError('artist');
+  updateAlbum(id: string, updateArtistDto: UpdateAlbumDto) {
+    const album = this.repository.getAlbumById(id);
+    if (!album) throw new CustomNotFoundError('album');
 
-  //   artist.name = updateArtistDto.name;
-  //   artist.grammy = updateArtistDto.grammy;
+    album.name = updateArtistDto.name;
+    album.year = updateArtistDto.year;
+    album.artistId = updateArtistDto.artistId;
 
-  //   this.repository.updateArtist(artist);
-  //   return artist;
-  // }
+    this.repository.updateAlbum(album);
+    return album;
+  }
 }

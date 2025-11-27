@@ -7,13 +7,12 @@ import {
   Param,
   ParseUUIDPipe,
   Post,
-  // Put,
+  Put,
   Res,
 } from '@nestjs/common';
 import { Response } from 'express';
 import { AlbumService } from './album.service';
-import { CreateAlbumDto } from './album.dto';
-// import { CreateArtistDto, UpdateArtistDto } from './album.dto';
+import { CreateAlbumDto, UpdateAlbumDto } from './album.dto';
 import { handleError } from 'src/common/utils/handleErrors';
 
 @Controller('album')
@@ -38,17 +37,17 @@ export class AlbumController {
     return this.albumService.createAlbum(createAlbumDto);
   }
 
-  // @Put(':id')
-  // update(
-  //   @Param('id', ParseUUIDPipe) id: string,
-  //   @Body() updateArtistDto: UpdateArtistDto,
-  // ) {
-  //   try {
-  //     return this.artistService.updateArtist(id, updateArtistDto);
-  //   } catch (err) {
-  //     handleError(err);
-  //   }
-  // }
+  @Put(':id')
+  update(
+    @Param('id', ParseUUIDPipe) id: string,
+    @Body() updateAlbumDto: UpdateAlbumDto,
+  ) {
+    try {
+      return this.albumService.updateAlbum(id, updateAlbumDto);
+    } catch (err) {
+      handleError(err);
+    }
+  }
 
   @Delete(':id')
   delete(@Param('id', ParseUUIDPipe) id: string, @Res() response: Response) {

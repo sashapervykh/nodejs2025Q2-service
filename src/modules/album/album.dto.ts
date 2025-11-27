@@ -12,4 +12,4 @@ export class CreateAlbumDto {
   artistId: string | null;
 }
 
-// export class UpdateArtistDto extends CreateArtistDto {}
+export class UpdateAlbumDto extends CreateAlbumDto {}
