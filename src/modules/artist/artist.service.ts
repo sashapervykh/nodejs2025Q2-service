@@ -44,14 +44,4 @@ export class ArtistService {
     this.repository.updateArtist(artist);
     return artist;
   }
-
-  // private getUserWithoutPassword(user: User) {
-  //   return {
-  //     id: user.id,
-  //     login: user.login,
-  //     createdAt: user.createdAt,
-  //     updatedAt: user.updatedAt,
-  //     version: user.version,
-  //   };
-  // }
 }
