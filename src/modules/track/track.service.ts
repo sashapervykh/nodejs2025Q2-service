@@ -1,7 +1,7 @@
 import { randomUUID } from 'node:crypto';
 import { Injectable } from '@nestjs/common';
 import { TrackRepository } from './track.repository';
-import { CreateTrackDto } from './track.dto';
+import { CreateTrackDto, UpdateTrackDto } from './track.dto';
 import { CustomNotFoundError } from 'src/common/utils/customErrors';
 
 @Injectable()
@@ -34,15 +34,16 @@ export class TrackService {
     this.repository.deleteTrack(id);
   }
 
-  // updateAlbum(id: string, updateArtistDto: UpdateAlbumDto) {
-  //   const album = this.repository.getAlbumById(id);
-  //   if (!album) throw new CustomNotFoundError('album');
+  updateAlbum(id: string, updateTrackDto: UpdateTrackDto) {
+    const track = this.repository.getTrackById(id);
+    if (!track) throw new CustomNotFoundError('track');
 
-  //   album.name = updateArtistDto.name;
-  //   album.year = updateArtistDto.year;
-  //   album.artistId = updateArtistDto.artistId;
+    track.name = updateTrackDto.name;
+    track.duration = updateTrackDto.duration;
+    track.artistId = updateTrackDto.artistId;
+    track.albumId = updateTrackDto.albumId;
 
-  //   this.repository.updateAlbum(album);
-  //   return album;
-  // }
+    this.repository.updateTrack(track);
+    return track;
+  }
 }

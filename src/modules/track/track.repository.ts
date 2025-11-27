@@ -20,10 +20,11 @@ export class TrackRepository {
     database.tracks = database.tracks.filter((elem) => elem.id !== id);
   }
 
-  // updateAlbum(album: Album) {
-  //   const oldAlbum = this.getAlbumById(album.id);
-  //   oldAlbum.name = album.name;
-  //   oldAlbum.year = album.year;
-  //   oldAlbum.artistId = album.artistId;
-  // }
+  updateTrack(track: Track) {
+    const oldTrack = this.getTrackById(track.id);
+    oldTrack.name = track.name;
+    oldTrack.duration = track.duration;
+    oldTrack.artistId = track.artistId;
+    oldTrack.albumId = track.albumId;
+  }
 }

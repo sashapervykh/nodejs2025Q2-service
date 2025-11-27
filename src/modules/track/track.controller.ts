@@ -7,12 +7,12 @@ import {
   Param,
   ParseUUIDPipe,
   Post,
-  // Put,
+  Put,
   Res,
 } from '@nestjs/common';
 import { Response } from 'express';
 import { TrackService } from './track.service';
-import { CreateTrackDto } from './track.dto';
+import { CreateTrackDto, UpdateTrackDto } from './track.dto';
 import { handleError } from 'src/common/utils/handleErrors';
 
 @Controller('track')
@@ -37,17 +37,17 @@ export class TrackController {
     return this.trackService.createTrack(createTrackDto);
   }
 
-  // @Put(':id')
-  // update(
-  //   @Param('id', ParseUUIDPipe) id: string,
-  //   @Body() updateAlbumDto: UpdateAlbumDto,
-  // ) {
-  //   try {
-  //     return this.albumService.updateAlbum(id, updateAlbumDto);
-  //   } catch (err) {
-  //     handleError(err);
-  //   }
-  // }
+  @Put(':id')
+  update(
+    @Param('id', ParseUUIDPipe) id: string,
+    @Body() updateTrackDto: UpdateTrackDto,
+  ) {
+    try {
+      return this.trackService.updateAlbum(id, updateTrackDto);
+    } catch (err) {
+      handleError(err);
+    }
+  }
 
   @Delete(':id')
   delete(@Param('id', ParseUUIDPipe) id: string, @Res() response: Response) {
