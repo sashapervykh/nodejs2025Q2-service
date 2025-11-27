@@ -12,37 +12,15 @@ export class FavService {
     return this.repository.findAllFavs();
   }
 
-  addFavTrack(id: string) {}
-  // getArtistById(id: string) {
-  //   const artist = this.repository.getArtistById(id);
-  //   if (!artist) throw new CustomNotFoundError('artist');
-  //   return artist;
-  // }
+  addFavTrack(id: string) {
+    this.repository.addFavTrack(id);
+  }
 
-  // createArtist(createArtistDto: CreateArtistDto) {
-  //   const uuid = randomUUID();
-  //   const artist = {
-  //     id: uuid,
-  //     ...createArtistDto,
-  //   };
-  //   this.repository.createArtist(artist);
-  //   return artist;
-  // }
+  addFavArtist(id: string) {
+    this.repository.addFavArtist(id);
+  }
 
-  // deleteArtist(id: string) {
-  //   const artist = this.repository.getArtistById(id);
-  //   if (!artist) throw new CustomNotFoundError('artist');
-  //   this.repository.deleteArtist(id);
-  // }
-
-  // updateArtist(id: string, updateArtistDto: UpdateArtistDto) {
-  //   const artist = this.repository.getArtistById(id);
-  //   if (!artist) throw new CustomNotFoundError('artist');
-
-  //   artist.name = updateArtistDto.name;
-  //   artist.grammy = updateArtistDto.grammy;
-
-  //   this.repository.updateArtist(artist);
-  //   return artist;
-  // }
+  addFavAlbum(id: string) {
+    this.repository.addFavAlbum(id);
+  }
 }

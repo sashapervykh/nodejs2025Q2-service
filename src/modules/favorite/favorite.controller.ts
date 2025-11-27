@@ -24,39 +24,21 @@ export class FavController {
     return this.favService.getAllFavs();
   }
 
-  // @Get(':id') getById(@Param('id', ParseUUIDPipe) id: string) {
-  //   try {
-  //     return this.artistService.getArtistById(id);
-  //   } catch (err) {
-  //     handleError(err);
-  //   }
-  // }
-
   @Post('track/:id')
   tracks(@Param('id', ParseUUIDPipe) id: string) {
     this.favService.addFavTrack(id);
     return { message: 'Track was added to favorite!' };
   }
 
-  // @Put(':id')
-  // update(
-  //   @Param('id', ParseUUIDPipe) id: string,
-  //   @Body() updateArtistDto: UpdateArtistDto,
-  // ) {
-  //   try {
-  //     return this.artistService.updateArtist(id, updateArtistDto);
-  //   } catch (err) {
-  //     handleError(err);
-  //   }
-  // }
+  @Post('artist/:id')
+  artists(@Param('id', ParseUUIDPipe) id: string) {
+    this.favService.addFavArtist(id);
+    return { message: 'Artist was added to favorite!' };
+  }
 
-  // @Delete(':id')
-  // delete(@Param('id', ParseUUIDPipe) id: string, @Res() response: Response) {
-  //   try {
-  //     this.artistService.deleteArtist(id);
-  //     response.status(HttpStatus.NO_CONTENT).send();
-  //   } catch (err) {
-  //     handleError(err);
-  //   }
-  // }
+  @Post('album/:id')
+  albums(@Param('id', ParseUUIDPipe) id: string) {
+    this.favService.addFavAlbum(id);
+    return { message: 'Artist was added to favorite!' };
+  }
 }

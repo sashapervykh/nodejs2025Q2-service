@@ -18,6 +18,9 @@ export class TrackRepository {
 
   deleteTrack(id: string) {
     database.tracks = database.tracks.filter((elem) => elem.id !== id);
+    database.favs.tracks = database.favs.tracks.filter(
+      (elem) => elem.id !== id,
+    );
   }
 
   updateTrack(track: Track) {
