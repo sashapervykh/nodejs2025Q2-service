@@ -20,10 +20,9 @@ export class ArtistRepository {
     database.artists = database.artists.filter((elem) => elem.id !== id);
   }
 
-  // updatePassword(user: User) {
-  //   const oldUser = this.getUserById(user.id);
-  //   oldUser.password = user.id;
-  //   oldUser.version = user.version;
-  //   oldUser.updatedAt = user.updatedAt;
-  // }
+  updateArtist(artist: Artist) {
+    const oldArtist = this.getArtistById(artist.id);
+    oldArtist.name = artist.name;
+    oldArtist.grammy = artist.grammy;
+  }
 }

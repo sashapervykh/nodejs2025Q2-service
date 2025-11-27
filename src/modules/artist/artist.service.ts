@@ -1,7 +1,7 @@
 import { randomUUID } from 'node:crypto';
 import { Injectable } from '@nestjs/common';
 import { ArtistRepository } from './artist.repository';
-import { CreateArtistDto } from './artist.dto';
+import { CreateArtistDto, UpdateArtistDto } from './artist.dto';
 import { CustomNotFoundError } from 'src/common/utils/customErrors';
 
 @Injectable()
@@ -34,19 +34,16 @@ export class ArtistService {
     this.repository.deleteArtist(id);
   }
 
-  // updatePassword(id: string, updatePasswordDto: UpdatePasswordDto) {
-  //   const user = this.repository.getUserById(id);
-  //   if (!user) throw new CustomNotFoundError('user');
-  //   if (user.password !== updatePasswordDto.oldPassword) {
-  //     throw new CustomNotAuthorizedError();
-  //   }
-  //   user.password = updatePasswordDto.newPassword;
-  //   user.version++;
-  //   user.updatedAt = Date.now();
+  updateArtist(id: string, updateArtistDto: UpdateArtistDto) {
+    const artist = this.repository.getArtistById(id);
+    if (!artist) throw new CustomNotFoundError('artist');
 
-  //   this.repository.updatePassword(user);
-  //   return this.getUserWithoutPassword(user);
-  // }
+    artist.name = updateArtistDto.name;
+    artist.grammy = updateArtistDto.grammy;
+
+    this.repository.updateArtist(artist);
+    return artist;
+  }
 
   // private getUserWithoutPassword(user: User) {
   //   return {

@@ -8,10 +8,4 @@ export class CreateArtistDto {
   grammy: boolean;
 }
 
-// export class UpdateArtistDto {
-//   @IsString()
-//   oldPassword: string;
-
-//   @IsString()
-//   newPassword: string;
-// }
+export class UpdateArtistDto extends CreateArtistDto {}

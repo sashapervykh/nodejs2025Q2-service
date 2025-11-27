@@ -7,12 +7,12 @@ import {
   Param,
   ParseUUIDPipe,
   Post,
-  // Put,
+  Put,
   Res,
 } from '@nestjs/common';
 import { Response } from 'express';
 import { ArtistService } from './artist.service';
-import { CreateArtistDto } from './artist.dto';
+import { CreateArtistDto, UpdateArtistDto } from './artist.dto';
 import { handleError } from 'src/common/utils/handleErrors';
 
 @Controller('artist')
@@ -37,17 +37,17 @@ export class ArtistController {
     return this.artistService.createArtist(createArtistDto);
   }
 
-  // @Put(':id')
-  // update(
-  //   @Param('id', ParseUUIDPipe) id: string,
-  //   @Body() updatePasswordDto: UpdatePasswordDto,
-  // ) {
-  //   try {
-  //     return this.userService.updatePassword(id, updatePasswordDto);
-  //   } catch (err) {
-  //     handleError(err);
-  //   }
-  // }
+  @Put(':id')
+  update(
+    @Param('id', ParseUUIDPipe) id: string,
+    @Body() updateArtistDto: UpdateArtistDto,
+  ) {
+    try {
+      return this.artistService.updateArtist(id, updateArtistDto);
+    } catch (err) {
+      handleError(err);
+    }
+  }
 
   @Delete(':id')
   delete(@Param('id', ParseUUIDPipe) id: string, @Res() response: Response) {
