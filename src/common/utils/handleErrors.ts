@@ -1,8 +1,13 @@
 import { HttpException, HttpStatus } from '@nestjs/common';
-import { CustomNotAuthorizedError, CustomNotFoundError } from './customErrors';
+import {
+  CustomNotAuthorizedError,
+  CustomNotFoundError,
+  CustomUnprocessableEntityError,
+  FavsNotFoundError,
+} from './customErrors';
 
 export function handleError(err) {
-  if (err instanceof CustomNotFoundError) {
+  if (err instanceof CustomNotFoundError || err instanceof FavsNotFoundError) {
     throw new HttpException(
       {
         message: err.message,
@@ -10,6 +15,18 @@ export function handleError(err) {
         error: 'NOT FOUND',
       },
       HttpStatus.NOT_FOUND,
+      { cause: err },
+    );
+  }
+
+  if (err instanceof CustomUnprocessableEntityError) {
+    throw new HttpException(
+      {
+        message: err.message,
+        statusCode: HttpStatus.UNPROCESSABLE_ENTITY,
+        error: 'UNPROCESSABLE ENTITY',
+      },
+      HttpStatus.UNPROCESSABLE_ENTITY,
       { cause: err },
     );
   }

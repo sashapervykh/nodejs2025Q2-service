@@ -1,19 +1,16 @@
 import {
-  // Body,
   Controller,
-  // Delete,
+  Delete,
   Get,
-  // HttpStatus,
+  HttpStatus,
   Param,
   ParseUUIDPipe,
   Post,
-  // Put,
-  // Res,
+  Res,
 } from '@nestjs/common';
 import { FavService } from './favorite.service';
-// import { Response } from 'express';
-// import { CreateArtistDto, UpdateArtistDto } from './favorite.dto';
-// import { handleError } from 'src/common/utils/handleErrors';
+import { handleError } from 'src/common/utils/handleErrors';
+import { Response } from 'express';
 
 @Controller('favs')
 export class FavController {
@@ -25,20 +22,73 @@ export class FavController {
   }
 
   @Post('track/:id')
-  tracks(@Param('id', ParseUUIDPipe) id: string) {
-    this.favService.addFavTrack(id);
-    return { message: 'Track was added to favorite!' };
+  addTracks(@Param('id', ParseUUIDPipe) id: string) {
+    try {
+      this.favService.addFavTrack(id);
+      return { message: 'Track was added to favorite!' };
+    } catch (err) {
+      handleError(err);
+    }
   }
 
   @Post('artist/:id')
-  artists(@Param('id', ParseUUIDPipe) id: string) {
-    this.favService.addFavArtist(id);
-    return { message: 'Artist was added to favorite!' };
+  addArtists(@Param('id', ParseUUIDPipe) id: string) {
+    try {
+      this.favService.addFavArtist(id);
+
+      return { message: 'Artist was added to favorite!' };
+    } catch (err) {
+      handleError(err);
+    }
   }
 
   @Post('album/:id')
-  albums(@Param('id', ParseUUIDPipe) id: string) {
-    this.favService.addFavAlbum(id);
-    return { message: 'Artist was added to favorite!' };
+  addAlbums(@Param('id', ParseUUIDPipe) id: string) {
+    try {
+      this.favService.addFavAlbum(id);
+      return { message: 'Album was added to favorite!' };
+    } catch (err) {
+      handleError(err);
+    }
+  }
+
+  @Delete('track/:id')
+  deleteTracks(
+    @Param('id', ParseUUIDPipe) id: string,
+    @Res() response: Response,
+  ) {
+    try {
+      this.favService.deleteFavTrack(id);
+      response.status(HttpStatus.NO_CONTENT).send();
+    } catch (err) {
+      handleError(err);
+    }
+  }
+
+  @Delete('artist/:id')
+  deleteArtists(
+    @Param('id', ParseUUIDPipe) id: string,
+    @Res() response: Response,
+  ) {
+    try {
+      this.favService.deleteFavArtist(id);
+      response.status(HttpStatus.NO_CONTENT).send();
+    } catch (err) {
+      handleError(err);
+    }
+  }
+
+  @Delete('album/:id')
+  deleteAlbums(
+    @Param('id', ParseUUIDPipe) id: string,
+    @Res() response: Response,
+  ) {
+    try {
+      this.favService.deleteFavAlbum(id);
+
+      response.status(HttpStatus.NO_CONTENT).send();
+    } catch (err) {
+      handleError(err);
+    }
   }
 }

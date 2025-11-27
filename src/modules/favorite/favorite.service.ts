@@ -23,4 +23,16 @@ export class FavService {
   addFavAlbum(id: string) {
     this.repository.addFavAlbum(id);
   }
+
+  deleteFavTrack(id: string) {
+    this.repository.deleteFavTrack(id);
+  }
+
+  deleteFavArtist(id: string) {
+    this.repository.deleteFavArtist(id);
+  }
+
+  deleteFavAlbum(id: string) {
+    this.repository.deleteFavAlbum(id);
+  }
 }

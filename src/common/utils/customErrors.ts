@@ -5,6 +5,13 @@ export class CustomNotFoundError extends Error {
   }
 }
 
+export class FavsNotFoundError extends Error {
+  constructor(endpoint: string) {
+    super(`The ${endpoint} was not in favorites!`);
+    this.name = 'FavsNotFoundError';
+  }
+}
+
 export class CustomNotAuthorizedError extends Error {
   constructor() {
     super(`Wrong password was provided!`);
