@@ -1,20 +1,20 @@
 import {
   Body,
   Controller,
-  // Delete,
+  Delete,
   Get,
-  // HttpStatus,
-  // Param,
-  // ParseUUIDPipe,
+  HttpStatus,
+  Param,
+  ParseUUIDPipe,
   Post,
   // Put,
-  // Res,
+  Res,
 } from '@nestjs/common';
-// import { Response } from 'express';
+import { Response } from 'express';
 import { AlbumService } from './album.service';
 import { CreateAlbumDto } from './album.dto';
 // import { CreateArtistDto, UpdateArtistDto } from './album.dto';
-// import { handleError } from 'src/common/utils/handleErrors';
+import { handleError } from 'src/common/utils/handleErrors';
 
 @Controller('album')
 export class AlbumController {
@@ -25,13 +25,13 @@ export class AlbumController {
     return this.albumService.getAllAlbums();
   }
 
-  // @Get(':id') getById(@Param('id', ParseUUIDPipe) id: string) {
-  //   try {
-  //     return this.artistService.getArtistById(id);
-  //   } catch (err) {
-  //     handleError(err);
-  //   }
-  // }
+  @Get(':id') getById(@Param('id', ParseUUIDPipe) id: string) {
+    try {
+      return this.albumService.getAlbumById(id);
+    } catch (err) {
+      handleError(err);
+    }
+  }
 
   @Post()
   create(@Body() createAlbumDto: CreateAlbumDto) {
@@ -50,13 +50,13 @@ export class AlbumController {
   //   }
   // }
 
-  // @Delete(':id')
-  // delete(@Param('id', ParseUUIDPipe) id: string, @Res() response: Response) {
-  //   try {
-  //     this.artistService.deleteArtist(id);
-  //     response.status(HttpStatus.NO_CONTENT).send();
-  //   } catch (err) {
-  //     handleError(err);
-  //   }
-  // }
+  @Delete(':id')
+  delete(@Param('id', ParseUUIDPipe) id: string, @Res() response: Response) {
+    try {
+      this.albumService.deleteAlbum(id);
+      response.status(HttpStatus.NO_CONTENT).send();
+    } catch (err) {
+      handleError(err);
+    }
+  }
 }

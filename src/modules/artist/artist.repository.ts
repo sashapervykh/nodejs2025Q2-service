@@ -18,6 +18,11 @@ export class ArtistRepository {
 
   deleteArtist(id: string) {
     database.artists = database.artists.filter((elem) => elem.id !== id);
+    database.albums
+      .filter((elem) => elem.artistId === id)
+      .forEach((elem) => {
+        elem.artistId = null;
+      });
   }
 
   updateArtist(artist: Artist) {

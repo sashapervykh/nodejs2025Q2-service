@@ -2,7 +2,7 @@ import { randomUUID } from 'node:crypto';
 import { Injectable } from '@nestjs/common';
 import { AlbumRepository } from './album.repository';
 import { CreateAlbumDto } from './album.dto';
-// import { CustomNotFoundError } from 'src/common/utils/customErrors';
+import { CustomNotFoundError } from 'src/common/utils/customErrors';
 
 @Injectable()
 export class AlbumService {
@@ -12,11 +12,11 @@ export class AlbumService {
     return this.repository.findAllAlbums();
   }
 
-  // getArtistById(id: string) {
-  //   const artist = this.repository.getArtistById(id);
-  //   if (!artist) throw new CustomNotFoundError('artist');
-  //   return artist;
-  // }
+  getAlbumById(id: string) {
+    const artist = this.repository.getAlbumById(id);
+    if (!artist) throw new CustomNotFoundError('album');
+    return artist;
+  }
 
   createAlbum(createAlbumDto: CreateAlbumDto) {
     const uuid = randomUUID();
@@ -28,11 +28,11 @@ export class AlbumService {
     return album;
   }
 
-  // deleteArtist(id: string) {
-  //   const artist = this.repository.getArtistById(id);
-  //   if (!artist) throw new CustomNotFoundError('artist');
-  //   this.repository.deleteArtist(id);
-  // }
+  deleteAlbum(id: string) {
+    const artist = this.repository.getAlbumById(id);
+    if (!artist) throw new CustomNotFoundError('album');
+    this.repository.deleteAlbum(id);
+  }
 
   // updateArtist(id: string, updateArtistDto: UpdateArtistDto) {
   //   const artist = this.repository.getArtistById(id);
