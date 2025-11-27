@@ -23,6 +23,11 @@ export class ArtistRepository {
       .forEach((elem) => {
         elem.artistId = null;
       });
+    database.tracks
+      .filter((elem) => elem.artistId === id)
+      .forEach((elem) => {
+        elem.artistId = null;
+      });
   }
 
   updateArtist(artist: Artist) {
