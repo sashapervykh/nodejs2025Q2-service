@@ -2,11 +2,7 @@ import { randomUUID } from 'node:crypto';
 import { Injectable } from '@nestjs/common';
 import { ArtistRepository } from './artist.repository';
 import { CreateArtistDto } from './artist.dto';
-// import { User } from './user.interface';
-// import {
-//   CustomNotAuthorizedError,
-//   CustomNotFoundError,
-// } from 'src/common/utils/customErrors';
+import { CustomNotFoundError } from 'src/common/utils/customErrors';
 
 @Injectable()
 export class ArtistService {
@@ -16,13 +12,11 @@ export class ArtistService {
     return this.repository.findAllArtists();
   }
 
-  // getUserById(id: string) {
-  //   const user = this.repository.getUserById(id);
-  //   console.log(user);
-  //   if (!user) throw new CustomNotFoundError('user');
-  //   console.log(user);
-  //   return this.getUserWithoutPassword(user);
-  // }
+  getArtistById(id: string) {
+    const artist = this.repository.getArtistById(id);
+    if (!artist) throw new CustomNotFoundError('artist');
+    return artist;
+  }
 
   createArtist(createArtistDto: CreateArtistDto) {
     const uuid = randomUUID();

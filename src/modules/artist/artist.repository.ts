@@ -8,9 +8,9 @@ export class ArtistRepository {
     return database.artists;
   }
 
-  // getUserById(id: string) {
-  //   return database.users.find((elem) => elem.id === id);
-  // }
+  getArtistById(id: string) {
+    return database.artists.find((elem) => elem.id === id);
+  }
 
   createArtist(artist: Artist) {
     database.artists.push(artist);

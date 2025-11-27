@@ -20,9 +20,7 @@ export class UserService {
 
   getUserById(id: string) {
     const user = this.repository.getUserById(id);
-    console.log(user);
     if (!user) throw new CustomNotFoundError('user');
-    console.log(user);
     return this.getUserWithoutPassword(user);
   }
 

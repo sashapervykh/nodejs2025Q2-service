@@ -4,15 +4,15 @@ import {
   // Delete,
   Get,
   // HttpStatus,
-  // Param,
-  // ParseUUIDPipe,
+  Param,
+  ParseUUIDPipe,
   Post,
   // Put,
   // Res,
 } from '@nestjs/common';
 import { ArtistService } from './artist.service';
 import { CreateArtistDto } from './artist.dto';
-// import { handleError } from 'src/common/utils/handleErrors';
+import { handleError } from 'src/common/utils/handleErrors';
 // import { Response } from 'express';
 
 @Controller('artist')
@@ -24,13 +24,13 @@ export class ArtistController {
     return this.artistService.getAllArtists();
   }
 
-  // @Get(':id') getById(@Param('id', ParseUUIDPipe) id: string) {
-  //   try {
-  //     return this.userService.getUserById(id);
-  //   } catch (err) {
-  //     handleError(err);
-  //   }
-  // }
+  @Get(':id') getById(@Param('id', ParseUUIDPipe) id: string) {
+    try {
+      return this.artistService.getArtistById(id);
+    } catch (err) {
+      handleError(err);
+    }
+  }
 
   @Post()
   create(@Body() createArtistDto: CreateArtistDto) {
