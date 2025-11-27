@@ -1,19 +1,19 @@
 import {
   Body,
   Controller,
-  // Delete,
+  Delete,
   Get,
-  // HttpStatus,
+  HttpStatus,
   Param,
   ParseUUIDPipe,
   Post,
   // Put,
-  // Res,
+  Res,
 } from '@nestjs/common';
+import { Response } from 'express';
 import { ArtistService } from './artist.service';
 import { CreateArtistDto } from './artist.dto';
 import { handleError } from 'src/common/utils/handleErrors';
-// import { Response } from 'express';
 
 @Controller('artist')
 export class ArtistController {
@@ -49,13 +49,13 @@ export class ArtistController {
   //   }
   // }
 
-  // @Delete(':id')
-  // delete(@Param('id', ParseUUIDPipe) id: string, @Res() response: Response) {
-  //   try {
-  //     this.userService.deleteUser(id);
-  //     response.status(HttpStatus.NO_CONTENT).send();
-  //   } catch (err) {
-  //     handleError(err);
-  //   }
-  // }
+  @Delete(':id')
+  delete(@Param('id', ParseUUIDPipe) id: string, @Res() response: Response) {
+    try {
+      this.artistService.deleteArtist(id);
+      response.status(HttpStatus.NO_CONTENT).send();
+    } catch (err) {
+      handleError(err);
+    }
+  }
 }

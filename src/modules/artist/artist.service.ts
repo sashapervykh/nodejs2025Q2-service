@@ -28,11 +28,11 @@ export class ArtistService {
     return artist;
   }
 
-  // deleteUser(id: string) {
-  //   const user = this.repository.getUserById(id);
-  //   if (!user) throw new CustomNotFoundError('user');
-  //   this.repository.deleteUser(id);
-  // }
+  deleteArtist(id: string) {
+    const artist = this.repository.getArtistById(id);
+    if (!artist) throw new CustomNotFoundError('artist');
+    this.repository.deleteArtist(id);
+  }
 
   // updatePassword(id: string, updatePasswordDto: UpdatePasswordDto) {
   //   const user = this.repository.getUserById(id);
