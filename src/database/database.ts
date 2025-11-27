@@ -6,7 +6,7 @@ import { User } from 'src/modules/user/user.interface';
 
 export class Database {
   users: User[] = [];
-  favorites: Favorite[] = [];
+  favs: Favorite = { albums: [], artists: [], tracks: [] };
   albums: Album[] = [];
   artists: Artist[] = [];
   tracks: Track[] = [];

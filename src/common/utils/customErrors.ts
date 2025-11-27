@@ -11,3 +11,12 @@ export class CustomNotAuthorizedError extends Error {
     this.name = 'NotAuthorizedError';
   }
 }
+
+export class CustomUnprocessableEntityError extends Error {
+  constructor(endpoint: string) {
+    super(
+      `The ${endpoint} with requested id was not found and could not be added to Favorites!`,
+    );
+    this.name = 'UnprocessableEntity';
+  }
+}
