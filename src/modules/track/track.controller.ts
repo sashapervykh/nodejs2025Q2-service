@@ -1,19 +1,19 @@
 import {
   Body,
   Controller,
-  // Delete,
+  Delete,
   Get,
-  // HttpStatus,
-  // Param,
-  // ParseUUIDPipe,
+  HttpStatus,
+  Param,
+  ParseUUIDPipe,
   Post,
   // Put,
-  // Res,
+  Res,
 } from '@nestjs/common';
-// import { Response } from 'express';
+import { Response } from 'express';
 import { TrackService } from './track.service';
 import { CreateTrackDto } from './track.dto';
-// import { handleError } from 'src/common/utils/handleErrors';
+import { handleError } from 'src/common/utils/handleErrors';
 
 @Controller('track')
 export class TrackController {
@@ -24,13 +24,13 @@ export class TrackController {
     return this.trackService.getAllTracks();
   }
 
-  // @Get(':id') getById(@Param('id', ParseUUIDPipe) id: string) {
-  //   try {
-  //     return this.albumService.getAlbumById(id);
-  //   } catch (err) {
-  //     handleError(err);
-  //   }
-  // }
+  @Get(':id') getById(@Param('id', ParseUUIDPipe) id: string) {
+    try {
+      return this.trackService.getTrackById(id);
+    } catch (err) {
+      handleError(err);
+    }
+  }
 
   @Post()
   create(@Body() createTrackDto: CreateTrackDto) {
@@ -49,13 +49,13 @@ export class TrackController {
   //   }
   // }
 
-  // @Delete(':id')
-  // delete(@Param('id', ParseUUIDPipe) id: string, @Res() response: Response) {
-  //   try {
-  //     this.albumService.deleteAlbum(id);
-  //     response.status(HttpStatus.NO_CONTENT).send();
-  //   } catch (err) {
-  //     handleError(err);
-  //   }
-  // }
+  @Delete(':id')
+  delete(@Param('id', ParseUUIDPipe) id: string, @Res() response: Response) {
+    try {
+      this.trackService.deleteTrack(id);
+      response.status(HttpStatus.NO_CONTENT).send();
+    } catch (err) {
+      handleError(err);
+    }
+  }
 }

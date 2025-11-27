@@ -8,17 +8,17 @@ export class TrackRepository {
     return database.tracks;
   }
 
-  // getAlbumById(id: string) {
-  //   return database.albums.find((elem) => elem.id === id);
-  // }
+  getTrackById(id: string) {
+    return database.tracks.find((elem) => elem.id === id);
+  }
 
   createTrack(track: Track) {
     database.tracks.push(track);
   }
 
-  // deleteAlbum(id: string) {
-  //   database.albums = database.albums.filter((elem) => elem.id !== id);
-  // }
+  deleteTrack(id: string) {
+    database.tracks = database.tracks.filter((elem) => elem.id !== id);
+  }
 
   // updateAlbum(album: Album) {
   //   const oldAlbum = this.getAlbumById(album.id);
