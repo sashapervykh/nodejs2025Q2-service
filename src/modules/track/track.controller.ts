@@ -3,6 +3,7 @@ import {
   Controller,
   Delete,
   Get,
+  HttpCode,
   HttpStatus,
   Param,
   ParseUUIDPipe,
@@ -50,10 +51,10 @@ export class TrackController {
   }
 
   @Delete(':id')
-  delete(@Param('id', ParseUUIDPipe) id: string, @Res() response: Response) {
+  @HttpCode(HttpStatus.NO_CONTENT)
+  delete(@Param('id', ParseUUIDPipe) id: string) {
     try {
       this.trackService.deleteTrack(id);
-      response.status(HttpStatus.NO_CONTENT).send();
     } catch (err) {
       handleError(err);
     }

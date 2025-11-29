@@ -2,15 +2,14 @@ import {
   Controller,
   Delete,
   Get,
+  HttpCode,
   HttpStatus,
   Param,
   ParseUUIDPipe,
   Post,
-  Res,
 } from '@nestjs/common';
 import { FavService } from './favorite.service';
 import { handleError } from 'src/common/utils/handleErrors';
-import { Response } from 'express';
 
 @Controller('favs')
 export class FavController {
@@ -53,40 +52,30 @@ export class FavController {
   }
 
   @Delete('track/:id')
-  deleteTracks(
-    @Param('id', ParseUUIDPipe) id: string,
-    @Res() response: Response,
-  ) {
+  @HttpCode(HttpStatus.NO_CONTENT)
+  deleteTracks(@Param('id', ParseUUIDPipe) id: string) {
     try {
       this.favService.deleteFavTrack(id);
-      response.status(HttpStatus.NO_CONTENT).send();
     } catch (err) {
       handleError(err);
     }
   }
 
   @Delete('artist/:id')
-  deleteArtists(
-    @Param('id', ParseUUIDPipe) id: string,
-    @Res() response: Response,
-  ) {
+  @HttpCode(HttpStatus.NO_CONTENT)
+  deleteArtists(@Param('id', ParseUUIDPipe) id: string) {
     try {
       this.favService.deleteFavArtist(id);
-      response.status(HttpStatus.NO_CONTENT).send();
     } catch (err) {
       handleError(err);
     }
   }
 
   @Delete('album/:id')
-  deleteAlbums(
-    @Param('id', ParseUUIDPipe) id: string,
-    @Res() response: Response,
-  ) {
+  @HttpCode(HttpStatus.NO_CONTENT)
+  deleteAlbums(@Param('id', ParseUUIDPipe) id: string) {
     try {
       this.favService.deleteFavAlbum(id);
-
-      response.status(HttpStatus.NO_CONTENT).send();
     } catch (err) {
       handleError(err);
     }

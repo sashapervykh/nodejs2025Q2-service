@@ -3,14 +3,13 @@ import {
   Controller,
   Delete,
   Get,
+  HttpCode,
   HttpStatus,
   Param,
   ParseUUIDPipe,
   Post,
   Put,
-  Res,
 } from '@nestjs/common';
-import { Response } from 'express';
 import { ArtistService } from './artist.service';
 import { CreateArtistDto, UpdateArtistDto } from './artist.dto';
 import { handleError } from 'src/common/utils/handleErrors';
@@ -50,10 +49,10 @@ export class ArtistController {
   }
 
   @Delete(':id')
-  delete(@Param('id', ParseUUIDPipe) id: string, @Res() response: Response) {
+  @HttpCode(HttpStatus.NO_CONTENT)
+  delete(@Param('id', ParseUUIDPipe) id: string) {
     try {
       this.artistService.deleteArtist(id);
-      response.status(HttpStatus.NO_CONTENT).send();
     } catch (err) {
       handleError(err);
     }

@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { UserRepository } from './user.repository';
-import { CreateUserDto, UpdatePasswordDto } from './user.dto';
+import { CreateUserDto, UpdatePasswordDto, UserResponseDto } from './user.dto';
 import { randomUUID } from 'node:crypto';
 import { User } from './user.interface';
 import {
@@ -58,7 +58,7 @@ export class UserService {
     return this.getUserWithoutPassword(user);
   }
 
-  private getUserWithoutPassword(user: User) {
+  private getUserWithoutPassword(user: User): UserResponseDto {
     return {
       id: user.id,
       login: user.login,

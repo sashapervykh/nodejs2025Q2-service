@@ -3,14 +3,13 @@ import {
   Controller,
   Delete,
   Get,
+  HttpCode,
   HttpStatus,
   Param,
   ParseUUIDPipe,
   Post,
   Put,
-  Res,
 } from '@nestjs/common';
-import { Response } from 'express';
 import { AlbumService } from './album.service';
 import { CreateAlbumDto, UpdateAlbumDto } from './album.dto';
 import { handleError } from 'src/common/utils/handleErrors';
@@ -50,10 +49,10 @@ export class AlbumController {
   }
 
   @Delete(':id')
-  delete(@Param('id', ParseUUIDPipe) id: string, @Res() response: Response) {
+  @HttpCode(HttpStatus.NO_CONTENT)
+  delete(@Param('id', ParseUUIDPipe) id: string) {
     try {
       this.albumService.deleteAlbum(id);
-      response.status(HttpStatus.NO_CONTENT).send();
     } catch (err) {
       handleError(err);
     }
