@@ -1,7 +1,18 @@
-export interface Track {
-  id: string; // uuid v4
+import { ApiProperty } from '@nestjs/swagger';
+
+export class Track {
+  @ApiProperty()
+  id: string;
+
+  @ApiProperty()
   name: string;
-  artistId: string | null; // refers to Artist
-  albumId: string | null; // refers to Album
-  duration: number; // integer number
+
+  @ApiProperty({ nullable: true })
+  artistId: string | null;
+
+  @ApiProperty({ nullable: true })
+  albumId: string | null;
+
+  @ApiProperty()
+  duration: number;
 }
