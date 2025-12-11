@@ -16,7 +16,7 @@ import {
   ApiParam,
   ApiResponse,
 } from '@nestjs/swagger';
-import { Favorite } from './favorite.interface';
+import { Favorite } from './favorite.entity';
 
 @Controller('favs')
 export class FavController {
@@ -27,8 +27,9 @@ export class FavController {
     description: 'All favorites retrieved',
     type: [Favorite],
   })
-  getAll() {
-    return this.favService.getAllFavs();
+  async getAll() {
+    const favorites = await this.favService.getAllFavs();
+    return favorites;
   }
 
   @Post('track/:id')
@@ -48,9 +49,9 @@ export class FavController {
     status: 422,
     description: 'Track with this id does not exist',
   })
-  addTracks(@Param('id', ParseUUIDPipe) id: string) {
+  async addTracks(@Param('id', ParseUUIDPipe) id: string) {
     try {
-      this.favService.addFavTrack(id);
+      await this.favService.addFavTrack(id);
       return { message: 'Track was added to favorite!' };
     } catch (err) {
       handleError(err);
@@ -74,10 +75,9 @@ export class FavController {
     status: 422,
     description: 'Artist with this id does not exist',
   })
-  addArtists(@Param('id', ParseUUIDPipe) id: string) {
+  async addArtists(@Param('id', ParseUUIDPipe) id: string) {
     try {
-      this.favService.addFavArtist(id);
-
+      await this.favService.addFavArtist(id);
       return { message: 'Artist was added to favorite!' };
     } catch (err) {
       handleError(err);
@@ -101,9 +101,9 @@ export class FavController {
     status: 422,
     description: 'Album with this id does not exist',
   })
-  addAlbums(@Param('id', ParseUUIDPipe) id: string) {
+  async addAlbums(@Param('id', ParseUUIDPipe) id: string) {
     try {
-      this.favService.addFavAlbum(id);
+      await this.favService.addFavAlbum(id);
       return { message: 'Album was added to favorite!' };
     } catch (err) {
       handleError(err);
@@ -128,9 +128,9 @@ export class FavController {
     status: 404,
     description: 'Track with this id is not in favorite',
   })
-  deleteTracks(@Param('id', ParseUUIDPipe) id: string) {
+  async deleteTracks(@Param('id', ParseUUIDPipe) id: string) {
     try {
-      this.favService.deleteFavTrack(id);
+      await this.favService.deleteFavTrack(id);
     } catch (err) {
       handleError(err);
     }
@@ -154,9 +154,9 @@ export class FavController {
     status: 404,
     description: 'Artist with this id is not in favorite',
   })
-  deleteArtists(@Param('id', ParseUUIDPipe) id: string) {
+  async deleteArtists(@Param('id', ParseUUIDPipe) id: string) {
     try {
-      this.favService.deleteFavArtist(id);
+      await this.favService.deleteFavArtist(id);
     } catch (err) {
       handleError(err);
     }
@@ -180,9 +180,9 @@ export class FavController {
     status: 404,
     description: 'Album with this id is not in favorite',
   })
-  deleteAlbums(@Param('id', ParseUUIDPipe) id: string) {
+  async deleteAlbums(@Param('id', ParseUUIDPipe) id: string) {
     try {
-      this.favService.deleteFavAlbum(id);
+      await this.favService.deleteFavAlbum(id);
     } catch (err) {
       handleError(err);
     }

@@ -38,7 +38,7 @@ export class AlbumService {
     album.name = updateArtistDto.name;
     album.year = updateArtistDto.year;
     album.artistId = updateArtistDto.artistId;
-    const updatedAlbum = this.repository.save(album);
+    const updatedAlbum = await this.repository.save(album);
     return updatedAlbum;
   }
 }

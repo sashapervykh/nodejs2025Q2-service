@@ -37,7 +37,7 @@ export class ArtistService {
     if (!artist) throw new CustomNotFoundError('artist');
     artist.name = updateArtistDto.name;
     artist.grammy = updateArtistDto.grammy;
-    const updatedArtist = this.repository.save(artist);
+    const updatedArtist = await this.repository.save(artist);
     return updatedArtist;
   }
 }

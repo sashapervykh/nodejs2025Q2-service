@@ -72,8 +72,9 @@ export class ArtistController {
     status: 400,
     description: 'Invalid body',
   })
-  create(@Body() createArtistDto: CreateArtistDto) {
-    const createdArtist = this.artistService.createArtist(createArtistDto);
+  async create(@Body() createArtistDto: CreateArtistDto) {
+    const createdArtist =
+      await this.artistService.createArtist(createArtistDto);
     return createdArtist;
   }
 

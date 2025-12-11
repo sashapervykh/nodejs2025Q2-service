@@ -12,6 +12,7 @@ import { User } from './modules/user/user.entity';
 import { Artist } from './modules/artist/artist.entity';
 import { Album } from './modules/album/album.entity';
 import { Track } from './modules/track/track.entity';
+import { Favorite } from './modules/favorite/favorite.entity';
 
 @Module({
   imports: [
@@ -26,8 +27,9 @@ import { Track } from './modules/track/track.entity';
         username: configService.get('DATABASE_USER'),
         password: configService.get('DATABASE_PASSWORD'),
         database: configService.get('DATABASE_NAME'),
-        entities: [User, Artist, Album, Track],
-        synchronize: true,
+        entities: [User, Artist, Album, Track, Favorite],
+        synchronize: false,
+        migrations: [''],
       }),
     }),
     UserModule,

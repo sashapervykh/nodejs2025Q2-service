@@ -32,7 +32,7 @@ export class AlbumController {
     type: [Album],
   })
   async getAll() {
-    const albums = this.albumService.getAllAlbums();
+    const albums = await this.albumService.getAllAlbums();
     return albums;
   }
 
