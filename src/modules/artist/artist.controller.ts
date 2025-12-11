@@ -20,7 +20,7 @@ import {
   ApiParam,
   ApiResponse,
 } from '@nestjs/swagger';
-import { Artist } from './artist.interface';
+import { Artist } from './artist.entity';
 
 @Controller('artist')
 export class ArtistController {
@@ -31,8 +31,9 @@ export class ArtistController {
     description: 'All artists retrieved',
     type: [Artist],
   })
-  getAll() {
-    return this.artistService.getAllArtists();
+  async getAll() {
+    const artists = this.artistService.getAllArtists();
+    return artists;
   }
 
   @Get(':id')
@@ -53,9 +54,10 @@ export class ArtistController {
     status: 404,
     description: 'Artist with this id does not exist',
   })
-  getById(@Param('id', ParseUUIDPipe) id: string) {
+  async getById(@Param('id', ParseUUIDPipe) id: string) {
     try {
-      return this.artistService.getArtistById(id);
+      const artist = await this.artistService.getArtistById(id);
+      return artist;
     } catch (err) {
       handleError(err);
     }
@@ -71,7 +73,8 @@ export class ArtistController {
     description: 'Invalid body',
   })
   create(@Body() createArtistDto: CreateArtistDto) {
-    return this.artistService.createArtist(createArtistDto);
+    const createdArtist = this.artistService.createArtist(createArtistDto);
+    return createdArtist;
   }
 
   @Put(':id')
@@ -121,9 +124,9 @@ export class ArtistController {
     status: 404,
     description: 'Artist with this id does not exist',
   })
-  delete(@Param('id', ParseUUIDPipe) id: string) {
+  async delete(@Param('id', ParseUUIDPipe) id: string) {
     try {
-      this.artistService.deleteArtist(id);
+      await this.artistService.deleteArtist(id);
     } catch (err) {
       handleError(err);
     }
