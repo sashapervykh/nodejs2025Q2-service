@@ -10,6 +10,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { User } from './modules/user/user.entity';
 import { Artist } from './modules/artist/artist.entity';
+import { Album } from './modules/album/album.entity';
 
 @Module({
   imports: [
@@ -24,7 +25,7 @@ import { Artist } from './modules/artist/artist.entity';
         username: configService.get('DATABASE_USER'),
         password: configService.get('DATABASE_PASSWORD'),
         database: configService.get('DATABASE_NAME'),
-        entities: [User, Artist],
+        entities: [User, Artist, Album],
         synchronize: true,
       }),
     }),
