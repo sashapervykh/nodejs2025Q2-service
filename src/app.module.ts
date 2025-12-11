@@ -11,6 +11,7 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { User } from './modules/user/user.entity';
 import { Artist } from './modules/artist/artist.entity';
 import { Album } from './modules/album/album.entity';
+import { Track } from './modules/track/track.entity';
 
 @Module({
   imports: [
@@ -25,7 +26,7 @@ import { Album } from './modules/album/album.entity';
         username: configService.get('DATABASE_USER'),
         password: configService.get('DATABASE_PASSWORD'),
         database: configService.get('DATABASE_NAME'),
-        entities: [User, Artist, Album],
+        entities: [User, Artist, Album, Track],
         synchronize: true,
       }),
     }),

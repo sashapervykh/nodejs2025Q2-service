@@ -1,49 +1,52 @@
-import { randomUUID } from 'node:crypto';
 import { Injectable } from '@nestjs/common';
-import { TrackRepository } from './track.repository';
 import { CreateTrackDto, UpdateTrackDto } from './track.dto';
 import { CustomNotFoundError } from 'src/common/utils/customErrors';
+import { Track } from './track.entity';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
+import { Artist } from '../artist/artist.entity';
+import { Album } from '../album/album.entity';
 
 @Injectable()
 export class TrackService {
-  constructor(private readonly repository: TrackRepository) {}
+  constructor(
+    @InjectRepository(Track)
+    private readonly trackRepository: Repository<Track>,
+    @InjectRepository(Artist)
+    private readonly artistRepository: Repository<Artist>,
+    @InjectRepository(Album)
+    private readonly albumRepository: Repository<Album>,
+  ) {}
 
   getAllTracks() {
-    return this.repository.findAllTracks();
+    return this.trackRepository.find();
   }
 
-  getTrackById(id: string) {
-    const track = this.repository.getTrackById(id);
+  async getTrackById(id: string) {
+    const track = await this.trackRepository.findOne({ where: { id } });
     if (!track) throw new CustomNotFoundError('track');
     return track;
   }
 
-  createTrack(createTrackDto: CreateTrackDto) {
-    const uuid = randomUUID();
-    const album = {
-      id: uuid,
-      ...createTrackDto,
-    };
-    this.repository.createTrack(album);
-    return album;
+  async createTrack(createTrackDto: CreateTrackDto) {
+    const createTrack = await this.trackRepository.save(createTrackDto);
+    return createTrack;
   }
 
-  deleteTrack(id: string) {
-    const track = this.repository.getTrackById(id);
+  async deleteTrack(id: string) {
+    const track = await this.trackRepository.findOne({ where: { id } });
     if (!track) throw new CustomNotFoundError('track');
-    this.repository.deleteTrack(id);
+    await this.trackRepository.delete(id);
   }
 
-  updateAlbum(id: string, updateTrackDto: UpdateTrackDto) {
-    const track = this.repository.getTrackById(id);
+  async updateTrack(id: string, updateTrackDto: UpdateTrackDto) {
+    const track = await this.trackRepository.findOne({ where: { id } });
     if (!track) throw new CustomNotFoundError('track');
-
     track.name = updateTrackDto.name;
     track.duration = updateTrackDto.duration;
     track.artistId = updateTrackDto.artistId;
     track.albumId = updateTrackDto.albumId;
-
-    this.repository.updateTrack(track);
-    return track;
+    const updatedTrack = await this.trackRepository.save(track);
+    return updatedTrack;
   }
 }

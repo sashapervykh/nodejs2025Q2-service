@@ -24,7 +24,13 @@ export class Track {
   @JoinColumn({ name: 'artistId' })
   artist: Artist | null;
 
+  @Column({ nullable: true })
+  artistId: string | null;
+
   @OneToOne(() => Album, { onDelete: 'SET NULL', nullable: true })
   @JoinColumn({ name: 'albumId' })
   album: Album | null;
+
+  @Column({ nullable: true })
+  albumId: string | null;
 }

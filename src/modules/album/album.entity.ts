@@ -2,8 +2,8 @@ import {
   Entity,
   PrimaryGeneratedColumn,
   Column,
-  OneToOne,
   JoinColumn,
+  ManyToOne,
 } from 'typeorm';
 import { Artist } from '../artist/artist.entity';
 
@@ -18,10 +18,10 @@ export class Album {
   @Column()
   year: number;
 
+  @ManyToOne(() => Artist, { onDelete: 'SET NULL', nullable: true })
+  @JoinColumn()
+  artist: Artist | null;
+
   @Column({ nullable: true })
   artistId: string | null;
-
-  @OneToOne(() => Artist, { onDelete: 'SET NULL' })
-  @JoinColumn()
-  artist: Artist;
 }

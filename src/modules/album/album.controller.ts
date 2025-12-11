@@ -20,7 +20,7 @@ import {
   ApiParam,
   ApiResponse,
 } from '@nestjs/swagger';
-import { Album } from './album.interface';
+import { Album } from './album.entity';
 
 @Controller('album')
 export class AlbumController {
@@ -95,12 +95,16 @@ export class AlbumController {
     status: 404,
     description: 'Album with this id does not exist',
   })
-  update(
+  async update(
     @Param('id', ParseUUIDPipe) id: string,
     @Body() updateAlbumDto: UpdateAlbumDto,
   ) {
     try {
-      return this.albumService.updateAlbum(id, updateAlbumDto);
+      const updateAlbum = await this.albumService.updateAlbum(
+        id,
+        updateAlbumDto,
+      );
+      return updateAlbum;
     } catch (err) {
       handleError(err);
     }

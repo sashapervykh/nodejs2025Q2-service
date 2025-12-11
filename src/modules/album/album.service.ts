@@ -1,4 +1,3 @@
-import { randomUUID } from 'node:crypto';
 import { Injectable } from '@nestjs/common';
 import { CreateAlbumDto, UpdateAlbumDto } from './album.dto';
 import { CustomNotFoundError } from 'src/common/utils/customErrors';

@@ -1,8 +1,8 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { Album } from '../album/album.interface';
 
-import { Track } from '../track/track.interface';
 import { Artist } from '../artist/artist.entity';
+import { Album } from '../album/album.entity';
+import { Track } from '../track/track.entity';
 
 export class Favorite {
   @ApiProperty({ type: [Artist] })
