@@ -95,12 +95,16 @@ export class ArtistController {
     status: 404,
     description: 'Artist with this id does not exist',
   })
-  update(
+  async update(
     @Param('id', ParseUUIDPipe) id: string,
     @Body() updateArtistDto: UpdateArtistDto,
   ) {
     try {
-      return this.artistService.updateArtist(id, updateArtistDto);
+      const updatedArtist = await this.artistService.updateArtist(
+        id,
+        updateArtistDto,
+      );
+      return updatedArtist;
     } catch (err) {
       handleError(err);
     }
