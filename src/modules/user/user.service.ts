@@ -1,69 +1,58 @@
 import { Injectable } from '@nestjs/common';
-import { UserRepository } from './user.repository';
 import { CreateUserDto, UpdatePasswordDto, UserResponseDto } from './user.dto';
-import { randomUUID } from 'node:crypto';
-import { User } from './user.interface';
 import {
   CustomNotAuthorizedError,
   CustomNotFoundError,
 } from 'src/common/utils/customErrors';
+import { InjectRepository } from '@nestjs/typeorm';
+import { User } from './user.entity';
+import { Repository } from 'typeorm';
 
 @Injectable()
 export class UserService {
-  constructor(private readonly repository: UserRepository) {}
+  constructor(
+    @InjectRepository(User) private readonly repository: Repository<User>,
+  ) {}
 
-  getAllUsers() {
-    return this.repository
-      .findAllUsers()
-      .map((user) => this.getUserWithoutPassword(user));
+  async getAllUsers() {
+    const users = await this.repository.find();
+    return users.map((user) => this.getUserWithoutPassword(user));
   }
 
-  getUserById(id: string) {
-    const user = this.repository.getUserById(id);
+  async getUserById(id: string) {
+    const user = await this.repository.findOne({ where: { id } });
     if (!user) throw new CustomNotFoundError('user');
     return this.getUserWithoutPassword(user);
   }
 
-  createUser(createUserDto: CreateUserDto) {
-    const createdAt = Date.now();
-    const uuid = randomUUID();
-    const user = {
-      id: uuid,
-      ...createUserDto,
-      createdAt,
-      updatedAt: createdAt,
-      version: 1,
-    };
-    this.repository.createUser(user);
+  async createUser(createUserDto: CreateUserDto) {
+    const user = await this.repository.save(createUserDto);
     return this.getUserWithoutPassword(user);
   }
 
-  deleteUser(id: string) {
-    const user = this.repository.getUserById(id);
+  async deleteUser(id: string) {
+    const user = await this.repository.findOne({ where: { id } });
     if (!user) throw new CustomNotFoundError('user');
-    this.repository.deleteUser(id);
+    await this.repository.delete(id);
   }
 
-  updatePassword(id: string, updatePasswordDto: UpdatePasswordDto) {
-    const user = this.repository.getUserById(id);
+  async updatePassword(id: string, updatePasswordDto: UpdatePasswordDto) {
+    const user = await this.repository.findOne({ where: { id } });
     if (!user) throw new CustomNotFoundError('user');
     if (user.password !== updatePasswordDto.oldPassword) {
       throw new CustomNotAuthorizedError();
     }
     user.password = updatePasswordDto.newPassword;
-    user.version++;
-    user.updatedAt = Date.now();
-
-    this.repository.updatePassword(user);
-    return this.getUserWithoutPassword(user);
+    const updated = await this.repository.save(user);
+    return this.getUserWithoutPassword(updated);
   }
 
   private getUserWithoutPassword(user: User): UserResponseDto {
     return {
       id: user.id,
       login: user.login,
-      createdAt: user.createdAt,
-      updatedAt: user.updatedAt,
+      createdAt: user.createdAt.getTime(),
+      updatedAt: user.updatedAt.getTime(),
       version: user.version,
     };
   }

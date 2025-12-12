@@ -1,47 +1,43 @@
-import { randomUUID } from 'node:crypto';
 import { Injectable } from '@nestjs/common';
-import { ArtistRepository } from './artist.repository';
 import { CreateArtistDto, UpdateArtistDto } from './artist.dto';
 import { CustomNotFoundError } from 'src/common/utils/customErrors';
+import { Artist } from './artist.entity';
+import { Repository } from 'typeorm';
+import { InjectRepository } from '@nestjs/typeorm';
 
 @Injectable()
 export class ArtistService {
-  constructor(private readonly repository: ArtistRepository) {}
+  constructor(
+    @InjectRepository(Artist) private readonly repository: Repository<Artist>,
+  ) {}
 
   getAllArtists() {
-    return this.repository.findAllArtists();
+    return this.repository.find();
   }
 
-  getArtistById(id: string) {
-    const artist = this.repository.getArtistById(id);
+  async getArtistById(id: string) {
+    const artist = await this.repository.findOne({ where: { id } });
     if (!artist) throw new CustomNotFoundError('artist');
     return artist;
   }
 
-  createArtist(createArtistDto: CreateArtistDto) {
-    const uuid = randomUUID();
-    const artist = {
-      id: uuid,
-      ...createArtistDto,
-    };
-    this.repository.createArtist(artist);
-    return artist;
+  async createArtist(createArtistDto: CreateArtistDto) {
+    const createdArtist = await this.repository.save(createArtistDto);
+    return createdArtist;
   }
 
-  deleteArtist(id: string) {
-    const artist = this.repository.getArtistById(id);
+  async deleteArtist(id: string) {
+    const artist = await this.repository.findOne({ where: { id } });
     if (!artist) throw new CustomNotFoundError('artist');
-    this.repository.deleteArtist(id);
+    await this.repository.delete(id);
   }
 
-  updateArtist(id: string, updateArtistDto: UpdateArtistDto) {
-    const artist = this.repository.getArtistById(id);
+  async updateArtist(id: string, updateArtistDto: UpdateArtistDto) {
+    const artist = await this.repository.findOne({ where: { id } });
     if (!artist) throw new CustomNotFoundError('artist');
-
     artist.name = updateArtistDto.name;
     artist.grammy = updateArtistDto.grammy;
-
-    this.repository.updateArtist(artist);
-    return artist;
+    const updatedArtist = await this.repository.save(artist);
+    return updatedArtist;
   }
 }

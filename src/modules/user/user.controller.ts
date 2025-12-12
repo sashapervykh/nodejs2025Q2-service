@@ -30,8 +30,9 @@ export class UserController {
     description: 'All users retrieved',
     type: [UserResponseDto],
   })
-  getAll() {
-    return this.userService.getAllUsers();
+  async getAll() {
+    const users = await this.userService.getAllUsers();
+    return users;
   }
 
   @Get(':id')
@@ -52,9 +53,10 @@ export class UserController {
     status: 404,
     description: 'User with this id does not exist',
   })
-  getById(@Param('id', ParseUUIDPipe) id: string) {
+  async getById(@Param('id', ParseUUIDPipe) id: string) {
     try {
-      return this.userService.getUserById(id);
+      const user = await this.userService.getUserById(id);
+      return user;
     } catch (err) {
       handleError(err);
     }
@@ -69,8 +71,9 @@ export class UserController {
     status: 400,
     description: 'Invalid body',
   })
-  create(@Body() createUserDto: CreateUserDto) {
-    return this.userService.createUser(createUserDto);
+  async create(@Body() createUserDto: CreateUserDto) {
+    const createdUser = await this.userService.createUser(createUserDto);
+    return createdUser;
   }
 
   @Put(':id')
@@ -95,12 +98,16 @@ export class UserController {
     status: 403,
     description: 'Old password is wrong',
   })
-  update(
+  async update(
     @Param('id', ParseUUIDPipe) id: string,
     @Body() updatePasswordDto: UpdatePasswordDto,
   ) {
     try {
-      return this.userService.updatePassword(id, updatePasswordDto);
+      const updatedUser = await this.userService.updatePassword(
+        id,
+        updatePasswordDto,
+      );
+      return updatedUser;
     } catch (err) {
       handleError(err);
     }
@@ -124,9 +131,9 @@ export class UserController {
     status: 404,
     description: 'User with this id does not exist',
   })
-  delete(@Param('id', ParseUUIDPipe) id: string) {
+  async delete(@Param('id', ParseUUIDPipe) id: string) {
     try {
-      this.userService.deleteUser(id);
+      await this.userService.deleteUser(id);
     } catch (err) {
       handleError(err);
     }

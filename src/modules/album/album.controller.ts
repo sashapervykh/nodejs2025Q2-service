@@ -20,7 +20,7 @@ import {
   ApiParam,
   ApiResponse,
 } from '@nestjs/swagger';
-import { Album } from './album.interface';
+import { Album } from './album.entity';
 
 @Controller('album')
 export class AlbumController {
@@ -31,8 +31,9 @@ export class AlbumController {
     description: 'All albums retrieved',
     type: [Album],
   })
-  getAll() {
-    return this.albumService.getAllAlbums();
+  async getAll() {
+    const albums = await this.albumService.getAllAlbums();
+    return albums;
   }
 
   @Get(':id')
@@ -53,9 +54,10 @@ export class AlbumController {
     status: 404,
     description: 'Album with this id does not exist',
   })
-  getById(@Param('id', ParseUUIDPipe) id: string) {
+  async getById(@Param('id', ParseUUIDPipe) id: string) {
     try {
-      return this.albumService.getAlbumById(id);
+      const album = await this.albumService.getAlbumById(id);
+      return album;
     } catch (err) {
       handleError(err);
     }
@@ -70,8 +72,9 @@ export class AlbumController {
     status: 400,
     description: 'Invalid body',
   })
-  create(@Body() createAlbumDto: CreateAlbumDto) {
-    return this.albumService.createAlbum(createAlbumDto);
+  async create(@Body() createAlbumDto: CreateAlbumDto) {
+    const album = await this.albumService.createAlbum(createAlbumDto);
+    return album;
   }
 
   @Put(':id')
@@ -92,12 +95,16 @@ export class AlbumController {
     status: 404,
     description: 'Album with this id does not exist',
   })
-  update(
+  async update(
     @Param('id', ParseUUIDPipe) id: string,
     @Body() updateAlbumDto: UpdateAlbumDto,
   ) {
     try {
-      return this.albumService.updateAlbum(id, updateAlbumDto);
+      const updateAlbum = await this.albumService.updateAlbum(
+        id,
+        updateAlbumDto,
+      );
+      return updateAlbum;
     } catch (err) {
       handleError(err);
     }
@@ -121,9 +128,9 @@ export class AlbumController {
     status: 404,
     description: 'Album with this id does not exist',
   })
-  delete(@Param('id', ParseUUIDPipe) id: string) {
+  async delete(@Param('id', ParseUUIDPipe) id: string) {
     try {
-      this.albumService.deleteAlbum(id);
+      await this.albumService.deleteAlbum(id);
     } catch (err) {
       handleError(err);
     }

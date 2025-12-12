@@ -1,48 +1,44 @@
-import { randomUUID } from 'node:crypto';
 import { Injectable } from '@nestjs/common';
-import { AlbumRepository } from './album.repository';
 import { CreateAlbumDto, UpdateAlbumDto } from './album.dto';
 import { CustomNotFoundError } from 'src/common/utils/customErrors';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Album } from './album.entity';
+import { Repository } from 'typeorm';
 
 @Injectable()
 export class AlbumService {
-  constructor(private readonly repository: AlbumRepository) {}
+  constructor(
+    @InjectRepository(Album) private readonly repository: Repository<Album>,
+  ) {}
 
   getAllAlbums() {
-    return this.repository.findAllAlbums();
+    return this.repository.find();
   }
 
-  getAlbumById(id: string) {
-    const album = this.repository.getAlbumById(id);
+  async getAlbumById(id: string) {
+    const album = await this.repository.findOne({ where: { id } });
     if (!album) throw new CustomNotFoundError('album');
     return album;
   }
 
-  createAlbum(createAlbumDto: CreateAlbumDto) {
-    const uuid = randomUUID();
-    const album = {
-      id: uuid,
-      ...createAlbumDto,
-    };
-    this.repository.createAlbum(album);
-    return album;
+  async createAlbum(createAlbumDto: CreateAlbumDto) {
+    const createdAlbum = await this.repository.save(createAlbumDto);
+    return createdAlbum;
   }
 
-  deleteAlbum(id: string) {
-    const album = this.repository.getAlbumById(id);
+  async deleteAlbum(id: string) {
+    const album = await this.repository.findOne({ where: { id } });
     if (!album) throw new CustomNotFoundError('album');
-    this.repository.deleteAlbum(id);
+    await this.repository.delete(id);
   }
 
-  updateAlbum(id: string, updateArtistDto: UpdateAlbumDto) {
-    const album = this.repository.getAlbumById(id);
+  async updateAlbum(id: string, updateArtistDto: UpdateAlbumDto) {
+    const album = await this.repository.findOne({ where: { id } });
     if (!album) throw new CustomNotFoundError('album');
-
     album.name = updateArtistDto.name;
     album.year = updateArtistDto.year;
     album.artistId = updateArtistDto.artistId;
-
-    this.repository.updateAlbum(album);
-    return album;
+    const updatedAlbum = await this.repository.save(album);
+    return updatedAlbum;
   }
 }

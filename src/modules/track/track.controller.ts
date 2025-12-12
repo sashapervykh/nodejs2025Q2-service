@@ -20,7 +20,7 @@ import {
   ApiParam,
   ApiResponse,
 } from '@nestjs/swagger';
-import { Track } from './track.interface';
+import { Track } from './track.entity';
 
 @Controller('track')
 export class TrackController {
@@ -31,8 +31,9 @@ export class TrackController {
     description: 'All tracks retrieved',
     type: [Track],
   })
-  getAll() {
-    return this.trackService.getAllTracks();
+  async getAll() {
+    const tracks = await this.trackService.getAllTracks();
+    return tracks;
   }
 
   @Get(':id')
@@ -53,9 +54,10 @@ export class TrackController {
     status: 404,
     description: 'Track with this id does not exist',
   })
-  getById(@Param('id', ParseUUIDPipe) id: string) {
+  async getById(@Param('id', ParseUUIDPipe) id: string) {
     try {
-      return this.trackService.getTrackById(id);
+      const track = await this.trackService.getTrackById(id);
+      return track;
     } catch (err) {
       handleError(err);
     }
@@ -70,8 +72,9 @@ export class TrackController {
     status: 400,
     description: 'Invalid body',
   })
-  create(@Body() createTrackDto: CreateTrackDto) {
-    return this.trackService.createTrack(createTrackDto);
+  async create(@Body() createTrackDto: CreateTrackDto) {
+    const track = await this.trackService.createTrack(createTrackDto);
+    return track;
   }
 
   @Put(':id')
@@ -92,12 +95,16 @@ export class TrackController {
     status: 404,
     description: 'Track with this id does not exist',
   })
-  update(
+  async update(
     @Param('id', ParseUUIDPipe) id: string,
     @Body() updateTrackDto: UpdateTrackDto,
   ) {
     try {
-      return this.trackService.updateAlbum(id, updateTrackDto);
+      const updatedTrack = await this.trackService.updateTrack(
+        id,
+        updateTrackDto,
+      );
+      return updatedTrack;
     } catch (err) {
       handleError(err);
     }
@@ -121,9 +128,9 @@ export class TrackController {
     status: 404,
     description: 'Track with this id does not exist',
   })
-  delete(@Param('id', ParseUUIDPipe) id: string) {
+  async delete(@Param('id', ParseUUIDPipe) id: string) {
     try {
-      this.trackService.deleteTrack(id);
+      await this.trackService.deleteTrack(id);
     } catch (err) {
       handleError(err);
     }
