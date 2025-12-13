@@ -25,6 +25,11 @@ export class UserService {
     return this.getUserWithoutPassword(user);
   }
 
+  async getUserByName(name: string) {
+    const user = await this.repository.findOne({ where: { login: name } });
+    return user;
+  }
+
   async createUser(createUserDto: CreateUserDto) {
     const user = await this.repository.save(createUserDto);
     return this.getUserWithoutPassword(user);
