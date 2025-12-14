@@ -12,3 +12,8 @@ export class SignUpDto {
 }
 
 export class SignInDto extends SignUpDto {}
+
+export class RefreshDto {
+  @ApiProperty()
+  refreshToken: string | undefined;
+}

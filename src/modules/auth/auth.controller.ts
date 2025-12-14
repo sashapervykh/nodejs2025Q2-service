@@ -1,6 +1,6 @@
 import { Body, Controller, Post, HttpCode, HttpStatus } from '@nestjs/common';
 import { AuthService } from './auth.service';
-import { SignInDto, SignUpDto } from './auth.dto';
+import { RefreshDto, SignInDto, SignUpDto } from './auth.dto';
 import { Public } from '../common/decorators/public/public.decorator';
 
 @Controller('auth')
@@ -19,5 +19,12 @@ export class AuthController {
   @Post('login')
   async signIn(@Body() signInDto: SignInDto) {
     return await this.authService.signIn(signInDto);
+  }
+
+  @Public()
+  @HttpCode(HttpStatus.OK)
+  @Post('refresh')
+  async refresh(@Body() refreshToken: RefreshDto) {
+    return await this.authService.refresh(refreshToken);
   }
 }
