@@ -1,5 +1,7 @@
 import { Injectable } from '@nestjs/common';
+import { Public } from './modules/common/decorators/public/public.decorator';
 
+@Public()
 @Injectable()
 export class AppService {
   getHello(): string {
