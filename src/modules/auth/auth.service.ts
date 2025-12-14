@@ -24,14 +24,14 @@ export class AuthService {
     if (!user) {
       throw new ForbiddenException('User with this login is not found');
     }
-    const hashedPassword = await bcrypt.hash(password, process.env.CRYPT_SALT);
-    const isPasswordValid = await bcrypt.compare(hashedPassword, user.password);
+
+    const isPasswordValid = await bcrypt.compare(password, user.password);
 
     if (!isPasswordValid) {
       throw new ForbiddenException('Wrong password');
     }
 
-    const payload = { sub: user.id, username: user.login };
+    const payload = { userId: user.id, login: user.login };
     const accessToken = await this.jwtService.signAsync(payload);
     const refreshToken = await this.jwtService.signAsync(payload, {
       secret: process.env.JWT_SECRET_REFRESH_KEY,
@@ -42,15 +42,16 @@ export class AuthService {
   }
 
   async signUp({ login, password }: SignUpDto) {
-    const user = await this.usersService.getUserByName(login);
-    if (user) {
-      throw new BadRequestException('The user with this login already exists');
-    }
+    const hashedPassword = await bcrypt.hash(
+      password,
+      Number(process.env.CRYPT_SALT),
+    );
+    const createdUser = await this.usersService.createUser({
+      login,
+      password: hashedPassword,
+    });
 
-    const hashedPassword = await bcrypt.hash(password, process.env.CRYPT_SALT);
-    this.usersService.createUser({ login, password: hashedPassword });
-
-    return { message: 'The user is created' };
+    return createdUser;
   }
 
   async refresh({ refreshToken }: { refreshToken: string }) {
@@ -63,16 +64,13 @@ export class AuthService {
         secret: process.env.JWT_SECRET_REFRESH_KEY,
       });
 
-      const newAccessToken = await this.jwtService.signAsync(
-        { sub: payload.sub, username: payload.username },
-        {
-          secret: process.env.JWT_SECRET_KEY,
-          expiresIn: process.env.TOKEN_EXPIRE_TIME,
-        },
-      );
+      const newAccessToken = await this.jwtService.signAsync({
+        userId: payload.userId,
+        login: payload.login,
+      });
 
       const newRefreshToken = await this.jwtService.signAsync(
-        { sub: payload.sub, username: payload.username },
+        { userId: payload.userId, login: payload.login },
         {
           secret: process.env.JWT_SECRET_REFRESH_KEY,
           expiresIn: process.env.TOKEN_REFRESH_EXPIRE_TIME,
