@@ -1,4 +1,8 @@
-import { ForbiddenException, Injectable } from '@nestjs/common';
+import {
+  BadRequestException,
+  ForbiddenException,
+  Injectable,
+} from '@nestjs/common';
 import { UserService } from '../user/user.service';
 import { SignInDto, SignUpDto } from './auth.dto';
 
@@ -19,7 +23,14 @@ export class AuthService {
     return 'Signed In';
   }
 
-  async signUp(signUpDto: SignUpDto): Promise<any> {
-    return 'Signed Up';
+  async signUp(signUpDto: SignUpDto): Promise<string> {
+    const user = await this.usersService.getUserByName(signUpDto.login);
+    if (user) {
+      throw new BadRequestException('The user with this login already exists');
+    }
+
+    this.usersService.createUser(signUpDto);
+
+    return 'The user is created';
   }
 }
